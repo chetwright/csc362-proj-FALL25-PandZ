@@ -47,7 +47,7 @@ CREATE TABLE forms (
     correction_form_id INT DEFAULT NULL,
     PRIMARY KEY (form_id),
     FOREIGN KEY (form_type) REFERENCES form_types(form_type) ON DELETE RESTRICT,
-    FOREIGN KEY (correction_form_id) REFERENCES correction_forms(correction_form_id) ON DELETE RESTRICT 
+    FOREIGN KEY (correction_form_id) REFERENCES correction_forms(correction_form_id) ON DELETE RESTRICT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE clients (
@@ -239,7 +239,7 @@ CREATE TABLE adjacent_neighbors (
 CREATE TABLE adjacent_property_owner_forms (
     form_id INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (form_id),
-    FOREIGN KEY (form_id) REFERENCES forms(form_id) ON DELETE RESTRICT 
+    FOREIGN KEY (form_id) REFERENCES forms(form_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE type_one_applicants (
@@ -265,7 +265,37 @@ CREATE TABLE applicants_link_forms (
 CREATE TABLE major_subdivision_plat_applications (
     form_id INT NOT NULL,
     surveyor_id INT,
+    engiCREATE TABLE major_subdivision_plat_applications (
+    form_id INT NOT NULL,
+    surveyor_id INT,
     engineer_id INT,
+    PVA_parcel_number INT,
+    mspa_topographic_survey VARCHAR(255),
+    mspa_proposed_plot_layout VARCHAR(255),
+    mspa_plat_restrictions VARCHAR(255),
+    mspa_property_owner_convenants VARCHAR(255),
+    mspa_association_covenants VARCHAR(255),
+    mspa_master_deed VARCHAR(255),
+    mspa_construction_plans VARCHAR(255),
+    mspa_traffic_impact_study VARCHAR(255),
+    mspa_geologic_study VARCHAR(255),
+    mspa_drainage_plan VARCHAR(255),
+    mspa_pavement_design VARCHAR(255),
+    mspa_SWPPP_EPSC_plan VARCHAR(255),
+    mspa_construction_bond_est VARCHAR(255),
+
+    -- NEW BLOB FIELDS
+    plat_file LONGBLOB,
+    plat_file_name VARCHAR(255),
+    plat_file_type VARCHAR(100),
+    plat_file_size INT,
+
+    PRIMARY KEY (form_id),
+    FOREIGN KEY (form_id) REFERENCES forms(form_id) ON DELETE RESTRICT,
+    FOREIGN KEY (surveyor_id) REFERENCES surveyors(surveyor_id) ON DELETE RESTRICT,
+    FOREIGN KEY (engineer_id) REFERENCES engineers(engineer_id) ON DELETE RESTRICT,
+    FOREIGN KEY (PVA_parcel_number) REFERENCES properties(PVA_parcel_number) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;neer_id INT,
     PVA_parcel_number INT,
     mspa_topographic_survey VARCHAR(255),
     mspa_proposed_plot_layout VARCHAR(255),
@@ -476,8 +506,10 @@ CREATE TABLE conditional_use_permit_applications (
     PRIMARY KEY (
     form_id
   ),
+  cupa_image LONGBLOB,
+
   PVA_parcel_number INT NOT NULL,
-  FOREIGN KEY (form_id) REFERENCES forms(form_id) ON DELETE RESTRICT,    
+  FOREIGN KEY (form_id) REFERENCES forms(form_id) ON DELETE RESTRICT,
   FOREIGN KEY (PVA_parcel_number) REFERENCES properties(PVA_parcel_number) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -490,7 +522,7 @@ CREATE TABLE hearing_forms (
     attorney_id INT,
     PRIMARY KEY (form_id),
     FOREIGN KEY (form_id) REFERENCES forms(form_id) ON DELETE RESTRICT,
-    FOREIGN KEY (attorney_id) REFERENCES attorneys(attorney_id) ON DELETE RESTRICT 
+    FOREIGN KEY (attorney_id) REFERENCES attorneys(attorney_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE type_one_forms (
@@ -537,7 +569,7 @@ CREATE TABLE open_record_requests (
     orr_applicant_id INT,
     PRIMARY KEY (form_id),
   FOREIGN KEY (form_id) REFERENCES forms(form_id) ON DELETE RESTRICT,
-  FOREIGN KEY (orr_applicant_id) REFERENCES orr_applicants(orr_applicant_id) ON DELETE RESTRICT 
+  FOREIGN KEY (orr_applicant_id) REFERENCES orr_applicants(orr_applicant_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- MOVED BEFORE ADMINISTRATIVE_PROPERTY_OWNERS
@@ -644,7 +676,7 @@ CREATE TABLE incomplete_client_forms (
     form_id, client_id
   ),
   FOREIGN KEY (form_id) REFERENCES forms(form_id) ON DELETE RESTRICT ,
-  FOREIGN KEY (client_id) REFERENCES clients(client_id) ON DELETE RESTRICT 
+  FOREIGN KEY (client_id) REFERENCES clients(client_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE client_forms (
@@ -654,7 +686,7 @@ CREATE TABLE client_forms (
     form_id, client_id
   ),
   FOREIGN KEY (client_id) REFERENCES clients(client_id) ON DELETE RESTRICT ,
-  FOREIGN KEY (form_id) REFERENCES forms(form_id) ON DELETE RESTRICT 
+  FOREIGN KEY (form_id) REFERENCES forms(form_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE site_development_plan_applications (
@@ -844,5 +876,3 @@ INSERT INTO states (state_code) VALUES
 ('WI'),
 ('WY'),
 ('DC');
-
-SET FOREIGN_KEY_CHECKS = 1;
